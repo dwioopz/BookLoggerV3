@@ -1,17 +1,23 @@
 package com.example.sari.bookloggerv3;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
 
 
 public class MainActivity extends Activity {
@@ -88,6 +94,45 @@ public class MainActivity extends Activity {
         String PengarangBuku;
         String JmlHlmBuku;
     }
+
+    public List<listViewBook> DataListBook = getDatafromListBook();
+
+    public class ListBookAdapter extends BaseAdapter {
+
+        @Override
+        public int getCount() {
+            return DataListBook.size();
+        }
+
+        @Override
+        public Object getItem(int arg0) {
+            return DataListBook.get(arg0);
+        }
+
+        @Override
+        public long getItemId(int arg0) {
+            return arg0;
+        }
+
+        @Override
+        public View getView(int arg0, View arg1, ViewGroup arg2) {
+            if (arg1 == null) {
+                LayoutInflater inflater = (LayoutInflater) MainActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                arg1 = inflater.inflate(R.layout.listbuku, arg2, false);
+            }
+
+            TextView itemJudul = (TextView) arg1.findViewById(R.id.namaBuku);
+            TextView itemPengr = (TextView) arg1.findViewById(R.id.namaPeng);
+            TextView itemHalam = (TextView) arg1.findViewById(R.id.jmlHalam);
+
+            listViewBook itemBuku = DataListBook.get(arg0);
+
+            itemHalam.setText(itemBuku.JmlHlmBuku);
+            itemJudul.setText(itemBuku.JudulBuku);
+            itemPengr.setText(itemBuku.PengarangBuku);
+            return arg1;
+        }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
