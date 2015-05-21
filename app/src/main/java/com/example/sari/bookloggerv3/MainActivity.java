@@ -2,8 +2,10 @@ package com.example.sari.bookloggerv3;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 //menginisiasi arraylist yang akan digunakan untuk menyimpan daftar judul buku
 
     //mendeklarasikan arrayadapter
@@ -152,6 +154,32 @@ public class MainActivity extends Activity {
         return ListOfViewBook;
     }
 
+    // mmbuat alert dialog untuk fungsi hapus buku
+    private void showDeleteDialog(final listViewBook chapter) {
+        AlertDialog.Builder deleteDialog = new AlertDialog.Builder(this);
+        deleteDialog.setMessage("Anda yakin untuk menghapus \n" + chapter.JudulBuku + "?");
+        deleteDialog.setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+                ListOfViewBook.remove(chapter);
+                //listOfBook.remove(bookTitle);
+                // setelah menghapus, kita perlu meng-update listview
+                //adapter.notifyDataSetChanged();
+                listItem = new ListBookAdapter();
+                ListView listItemView = (ListView) findViewById(R.id.listBuku);
+                listItemView.setAdapter(listItem);
+            }
+        });
+        deleteDialog.setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        deleteDialog.show();
+    }
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
             // Inflate the menu; this adds items to the action bar if it is present.
