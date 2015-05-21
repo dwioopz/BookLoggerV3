@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
@@ -56,8 +57,37 @@ public class MainActivity extends Activity {
         tambah.setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(View v) {
+        String judulBaru, pengarangBaru, halamanBaru;
+        TextView inputJudul = (TextView) findViewById(R.id.inputJudul);
+        TextView inputPengarang = (TextView) findViewById(R.id.inputPengarang);
+        TextView inputHalaman = (TextView) findViewById(R.id.inputHalaman);
+        switch (v.getId()) {
+            case R.id.btnSimpan:
+                judulBaru = inputJudul.getText().toString();
+                pengarangBaru = inputPengarang.getText().toString();
+                halamanBaru = inputHalaman.getText().toString();
 
+                listViewBook item = new listViewBook();
+                item.JudulBuku = judulBaru;
+                item.PengarangBuku = pengarangBaru;
+                item.JmlHlmBuku = halamanBaru;
+                ListOfViewBook.add(item);
 
+                listItem = new ListBookAdapter();
+                ListView listItemView = (ListView) findViewById(R.id.listBuku);
+                listItemView.setAdapter(listItem);
+
+                break;
+        }
+    }
+
+    public class listViewBook {
+        String JudulBuku;
+        String PengarangBuku;
+        String JmlHlmBuku;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
