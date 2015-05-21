@@ -1,18 +1,61 @@
 package com.example.sari.bookloggerv3;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
+//menginisiasi arraylist yang akan digunakan untuk menyimpan daftar judul buku
+
+    //mendeklarasikan arrayadapter
+    Button inputButton;
+    ListView listOfBook;
+    EditText inputJudulBuku, inputPengarangBuku, inputJmlHlmBuku;
+
+    ArrayAdapter<String> adapter;
+
+    ListBookAdapter listItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        inputJudulBuku = (EditText) findViewById(R.id.inputJudul);
+        inputPengarangBuku = (EditText) findViewById(R.id.inputPengarang);
+        inputJmlHlmBuku = (EditText) findViewById(R.id.inputHalaman);
+        inputButton = (Button) findViewById(R.id.btnSimpan);
+
+        //listOfBook.setAdapter(adapter);
+        listItem = new ListBookAdapter();
+        ListView listItemView = (ListView) findViewById(R.id.listBuku);
+        listItemView.setAdapter(listItem);
+
+
+        listItemView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                                    long arg3) {
+
+                listViewBook chapter = listItem.getListViewBook(arg2);
+
+                showDeleteDialog(chapter);
+
+            }
+        });
+
+        Button tambah = (Button) findViewById(R.id.btnSimpan);
+        tambah.setOnClickListener(this);
     }
+
 
 
     @Override
